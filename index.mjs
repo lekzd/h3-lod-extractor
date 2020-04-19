@@ -5,6 +5,18 @@ import {getPalettes} from "./modules/getPalettes";
 import {SpriteMaker} from "./convertors/SpriteMaker";
 import {logger} from "./modules/logger";
 import {argvOptions} from "./modules/argvOptions";
+import {
+    BATTLE_CREATURES_CASTLE,
+    BATTLE_CREATURES_RAMPART,
+    BATTLE_CREATURES_TOWER,
+    BATTLE_CREATURES_INFERNO,
+    BATTLE_CREATURES_NECROPOLIS,
+    BATTLE_CREATURES_DUNGEON,
+    BATTLE_CREATURES_FORTRESS,
+    BATTLE_CREATURES_STRONGHOLD,
+    BATTLE_CREATURES_CONFLUX,
+    BATTLE_CREATURES_RANDOM,
+} from "./constants/BATTLE_CREATURES";
 
 process.on('uncaughtException', function(err) {
     console.log('[Error:]: ' + err);
@@ -214,8 +226,13 @@ async function main() {
         })
         .spriteDEF({
             regExp: /^cprsmall\.def$/,
-            width: 1,
+            width: 14,
             outFile: path.join(argvOptions.output, `ui/portraits/creatures/sm.png`)
+        })
+        .spriteDEF({
+            regExp: /^twcrport\.def$/,
+            width: 14,
+            outFile: path.join(argvOptions.output, `ui/portraits/creatures/lg.png`)
         })
 
         // BATTLE EFFECTS
@@ -546,6 +563,98 @@ async function main() {
             outFile: path.join(argvOptions.output, `towns/$2/buildings.png`)
         })
     ;
+
+    // BATLE CREATURE ANIMATIONS
+
+    BATTLE_CREATURES_CASTLE.map((name, index) => {
+        spriteMaker
+            .spriteDEF({
+                regExp: new RegExp(`^(${name.toLowerCase()})\\.def$`),
+                width: 8,
+                outFile: path.join(argvOptions.output, `battle/creatures/c/${index}_$1.png`)
+            })
+    })
+
+    BATTLE_CREATURES_RAMPART.map((name, index) => {
+        spriteMaker
+            .spriteDEF({
+                regExp: new RegExp(`^(${name.toLowerCase()})\\.def$`),
+                width: 8,
+                outFile: path.join(argvOptions.output, `battle/creatures/r/${index}_$1.png`)
+            })
+    })
+
+    BATTLE_CREATURES_TOWER.map((name, index) => {
+        spriteMaker
+            .spriteDEF({
+                regExp: new RegExp(`^(${name.toLowerCase()})\\.def$`),
+                width: 8,
+                outFile: path.join(argvOptions.output, `battle/creatures/t/${index}_$1.png`)
+            })
+    })
+
+    BATTLE_CREATURES_INFERNO.map((name, index) => {
+        spriteMaker
+            .spriteDEF({
+                regExp: new RegExp(`^(${name.toLowerCase()})\\.def$`),
+                width: 8,
+                outFile: path.join(argvOptions.output, `battle/creatures/i/${index}_$1.png`)
+            })
+    })
+
+    BATTLE_CREATURES_NECROPOLIS.map((name, index) => {
+        spriteMaker
+            .spriteDEF({
+                regExp: new RegExp(`^(${name.toLowerCase()})\\.def$`),
+                width: 8,
+                outFile: path.join(argvOptions.output, `battle/creatures/n/${index}_$1.png`)
+            })
+    })
+
+    BATTLE_CREATURES_DUNGEON.map((name, index) => {
+        spriteMaker
+            .spriteDEF({
+                regExp: new RegExp(`^(${name.toLowerCase()})\\.def$`),
+                width: 8,
+                outFile: path.join(argvOptions.output, `battle/creatures/d/${index}_$1.png`)
+            })
+    })
+
+    BATTLE_CREATURES_FORTRESS.map((name, index) => {
+        spriteMaker
+            .spriteDEF({
+                regExp: new RegExp(`^(${name.toLowerCase()})\\.def$`),
+                width: 8,
+                outFile: path.join(argvOptions.output, `battle/creatures/f/${index}_$1.png`)
+            })
+    })
+
+    BATTLE_CREATURES_STRONGHOLD.map((name, index) => {
+        spriteMaker
+            .spriteDEF({
+                regExp: new RegExp(`^(${name.toLowerCase()})\\.def$`),
+                width: 8,
+                outFile: path.join(argvOptions.output, `battle/creatures/s/${index}_$1.png`)
+            })
+    })
+
+    BATTLE_CREATURES_CONFLUX.map((name, index) => {
+        spriteMaker
+            .spriteDEF({
+                regExp: new RegExp(`^(${name.toLowerCase()})\\.def$`),
+                width: 8,
+                outFile: path.join(argvOptions.output, `battle/creatures/co/${index}_$1.png`)
+            })
+    })
+
+    BATTLE_CREATURES_RANDOM.map((name, index) => {
+        spriteMaker
+            .spriteDEF({
+                regExp: new RegExp(`^(${name.toLowerCase()})\\.def$`),
+                width: 8,
+                outFile: path.join(argvOptions.output, `battle/creatures/x/${index}_$1.png`)
+            })
+    })
 
 }
 

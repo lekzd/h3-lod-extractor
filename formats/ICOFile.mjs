@@ -9,10 +9,55 @@ export class ICOFile extends AbstractFile {
 
     static fromPixelsData(pixels, width, height) {
         const bmpData = bmp.encode({data: pixels, width, height});
-        const outData = Buffer.from();
+        const headerSize = 22;
+        const isonData = new ArrayBuffer(headerSize + bmpData.length);
 
+        const view = new DataView(isonData);
+
+        // icons list header
+
+        // Reserved. Must always be 0.
+        view.setInt16(0, 0);
+
+        // Specifies image type: 
+        // 1 for icon (.ICO) image, 
+        // 2 for cursor (.CUR) image. Other values are invalid
+        view.setInt16(2, 2);
+
+        // Specifies number of images in the file.
+        view.setInt16(4, 1);
+
+        // image 1 header
+
+        // image width
+        view.setInt8(6, width);
+
+        // image height
+        view.setInt8(7, height);
+
+        // colors in palette count
+        view.setInt8(8, 0);
+
+        // reserved, should be 0
+        view.setInt8(9, 0);
+
+        // hotspotX
+        view.setInt16(10, 0);
+
+        // hotspotY
+        view.setInt16(12, 0);
+
+        // imageData size
+        view.setInt32(14, bmpData.length);
+
+        // imageData start offset
+        view.setInt32(18, headerSize);
+
+        icoData.fill(bmpData, headerSize);
+
+        const icoFile = new ICOFile(icoData);
         const stream = new Readable();
-        stream.push();
+        stream.push(icoFile.buffer);
 
         return stream;
     }

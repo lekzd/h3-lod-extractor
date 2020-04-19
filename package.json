@@ -4,6 +4,7 @@
   "description": "Node.js script converts HoMM 3 .lod archives to set of pictures and spritesheets.",
   "main": "index.mjs",
   "private": true,
+  "type": "node",
   "scripts": {
   },
   "author": "lekzd@mail.ru",
