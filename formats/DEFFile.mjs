@@ -61,7 +61,7 @@ export class DEFFile extends AbstractFile {
             .reduce((accumulator, meta) => {
                 return accumulator.concat(meta.offsets);
             }, [])
-            .sort((a, b) => a > b ? 1 : -1);
+            // .sort((a, b) => a > b ? 1 : -1);
 
         let i = 0;
         let lastPerfTime = Date.now();

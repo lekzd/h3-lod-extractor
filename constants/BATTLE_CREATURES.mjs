@@ -2,10 +2,11 @@
 // Castle Замок
 export const BATTLE_CREATURES_CASTLE = [
     'CPKMAN',
-    'CHABD',
+    'CHALBD',
     'CLCBOW',
+    'CHCBOW',
     'CGRIFF',
-    'CRRIFF',
+    'CRGRIF',
     'CSWORD',
     'CCRUSD',
     'CMONKK',
@@ -67,7 +68,7 @@ export const BATTLE_CREATURES_INFERNO = [
     'CPFOE',
     'CEFRES',
     'CDEVIL',
-    'CADEVIL',
+    'CADEVL',
 ]
 
 // Necropolis Некрополь
@@ -175,6 +176,6 @@ export const BATTLE_CREATURES_RANDOM = [
     'CMUMMY',
     'CSHARP',
     'CCDRGN',
-    'CRSDRGN',
+    'CRSDGN',
     'CFDRGN',
 ];

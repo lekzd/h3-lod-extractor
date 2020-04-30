@@ -10,7 +10,7 @@ npm install
 ```
 ## Usage
 ```
-node --experimental-modules index.mjs --input=test/h3sprite.lod --output=test/out
+node --experimental-modules --es-module-specifier-resolution=node index.mjs --input=test/h3sprite.lod --output=test/out
 ```
 To get all nescessary pictures you need to pass all *.lod files from original Heroes 3 repository.
 
