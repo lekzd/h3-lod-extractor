@@ -51,31 +51,32 @@ export class DEFFile extends AbstractFile {
     }
 
     readBlocks() {
-        const blocksMeta = [];
+        this.blocks = [];
 
         for (let i = 0; i < this.blocksCount; i++) {
-            blocksMeta.push(this.getBlockMeta(this.index));
+            this.blocks.push(this.getBlockMeta(this.index));
         }
 
-        const offsets = blocksMeta
-            .reduce((accumulator, meta) => {
-                return accumulator.concat(meta.offsets);
-            }, [])
-            // .sort((a, b) => a > b ? 1 : -1);
-
-        let i = 0;
+        let frameIndex = 0;
         let lastPerfTime = Date.now();
 
-        this.frames = offsets
-            .reduce((accumulator, offset) => {
-                const data = this.getFramesData(1, offset);
+        this.frames = [];
 
-                logger.log(`frame: ${++i} of ${offsets.length} time: ${Date.now() - lastPerfTime}`);
+        for (let i = 0; i < this.blocks.length; i++) {
+            const block = this.blocks[i];
+
+            for (let j = 0; j < block.offsets; j++) {
+                const offset = block.offsets[j];
+
+                const data = this.getFrameData(offset);
+
+                logger.log(`frame: ${++frameIndex} of ${block.offsets.length} time: ${Date.now() - lastPerfTime}`);
 
                 lastPerfTime = Date.now();
 
-                return accumulator.concat(data);
-            }, [])
+                this.frames.push(data);
+            }
+        }
     }
 
     getBlockMeta(offset) {
@@ -150,69 +151,58 @@ export class DEFFile extends AbstractFile {
         }
     }
 
-    getFramesData(count, offset) {
+    getFrameData(offset) {
         this.index = offset;
 
-        const frames = [];
         const headerOffset = 32;
         let currentOffset = offset;
         let firstFullWidth = -1;
         let firstFullHeight = -1;
 
-        for (let i = 0; i < count; i++) {
-            const header = this.getFrameHeader(currentOffset);
+        const header = this.getFrameHeader(currentOffset);
 
-            if (firstFullWidth === -1 && firstFullHeight === -1) {
-                firstFullWidth = header.fullWidth;
-                firstFullHeight = header.fullHeight;
-            } else {
-                if (firstFullWidth > header.fullWidth) {
-                    header.fullWidth = firstFullWidth;
-                }
-                if (firstFullWidth < header.fullWidth) {
-                    throw Error('first width smaller then latter one');
-                }
-                if (firstFullHeight > header.fullHeight) {
-                    header.fullHeight = firstFullHeight;
-                }
-                if (firstFullHeight < header.fullHeight) {
-                    throw Error('first height smaller then latter one');
-                }
+        if (firstFullWidth === -1 && firstFullHeight === -1) {
+            firstFullWidth = header.fullWidth;
+            firstFullHeight = header.fullHeight;
+        } else {
+            if (firstFullWidth > header.fullWidth) {
+                header.fullWidth = firstFullWidth;
             }
-
-            if (header.width === 0 && header.height === 0) {
-                continue;
+            if (firstFullWidth < header.fullWidth) {
+                throw Error('first width smaller then latter one');
             }
-
-            const indexes = this.parsePixelData(header, currentOffset + headerOffset);
-
-            const imageData = new Array(header.width * header.height * 4);
-
-            for (let i = 0; i < indexes.length; i++) {
-                const {r, g, b, a} = this.palette[indexes[i]];
-                const j = i * 4;
-
-                imageData[j] = r;
-                imageData[j + 1] = g;
-                imageData[j + 2] = b;
-                imageData[j + 3] = a;
+            if (firstFullHeight > header.fullHeight) {
+                header.fullHeight = firstFullHeight;
             }
-
-            // const imageData = indexes.reduce((accumulator, index) => {
-            //     const {r, g, b, a} = this.palette[index];
-
-            //     return accumulator.concat([r, g, b, a])
-            // }, []);
-
-            currentOffset += headerOffset + header.size;
-
-            frames.push({
-                header,
-                imageData
-            });
+            if (firstFullHeight < header.fullHeight) {
+                throw Error('first height smaller then latter one');
+            }
         }
 
-        return frames;
+        if (header.width === 0 && header.height === 0) {
+            continue;
+        }
+
+        const indexes = this.parsePixelData(header, currentOffset + headerOffset);
+
+        const imageData = new Array(header.width * header.height * 4);
+
+        for (let i = 0; i < indexes.length; i++) {
+            const {r, g, b, a} = this.palette[indexes[i]];
+            const j = i * 4;
+
+            imageData[j] = r;
+            imageData[j + 1] = g;
+            imageData[j + 2] = b;
+            imageData[j + 3] = a;
+        }
+
+        currentOffset += headerOffset + header.size;
+
+        return {
+            header,
+            imageData
+        };
     }
 
     parsePixelData(header, offset) {
