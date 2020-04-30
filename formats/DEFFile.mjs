@@ -65,16 +65,17 @@ export class DEFFile extends AbstractFile {
         for (let i = 0; i < this.blocks.length; i++) {
             const block = this.blocks[i];
 
-            for (let j = 0; j < block.offsets; j++) {
+            for (let j = 0; j < block.offsets.length; j++) {
                 const offset = block.offsets[j];
-
                 const data = this.getFrameData(offset);
 
                 logger.log(`frame: ${++frameIndex} of ${block.offsets.length} time: ${Date.now() - lastPerfTime}`);
 
                 lastPerfTime = Date.now();
 
-                this.frames.push(data);
+                if (data) {
+                    this.frames.push(data);
+                }
             }
         }
     }
@@ -180,7 +181,7 @@ export class DEFFile extends AbstractFile {
         }
 
         if (header.width === 0 && header.height === 0) {
-            continue;
+            return null;
         }
 
         const indexes = this.parsePixelData(header, currentOffset + headerOffset);
