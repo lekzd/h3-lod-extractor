@@ -6,6 +6,8 @@
   "private": true,
   "type": "node",
   "scripts": {
+    "extract": "node --experimental-modules --es-module-specifier-resolution=node index.mjs",
+    "debug": "node --inspect-brk --experimental-modules --es-module-specifier-resolution=node index.mjs"
   },
   "author": "lekzd@mail.ru",
   "license": "ISC",

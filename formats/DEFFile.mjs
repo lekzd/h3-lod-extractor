@@ -36,13 +36,17 @@ export class DEFFile extends AbstractFile {
         this.seek(4);
     }
 
+    canGenerateSpriteSheet() {
+        return [0x42].includes(this.type);
+    }
+
     readPalette() {
         this.palette = [];
 
         for (let i = 0; i < 256; i++) {
             const [r, g, b] = this.readRaw(3);
 
-            this.palette.push({r, g, b});
+            this.palette.push({r, g, b, a: 255});
 
             this.index += 3;
         }
@@ -98,10 +102,10 @@ export class DEFFile extends AbstractFile {
             names.push(nameSource.substr(0, nameEndOffset));
         }
 
-        const offsets = [];
+        const offsets = new Uint32Array(count);
 
         for (let i = 0; i < count; i++) {
-            offsets.push(this.readInt32());
+            offsets[i] = this.readInt32();
             this.seek(4);
         }
 
@@ -186,7 +190,7 @@ export class DEFFile extends AbstractFile {
 
         const indexes = this.parsePixelData(header, currentOffset + headerOffset);
 
-        const imageData = new Array(header.width * header.height * 4);
+        const imageData = new Uint8Array(header.width * header.height * 4);
 
         for (let i = 0; i < indexes.length; i++) {
             const {r, g, b, a} = this.palette[indexes[i]];

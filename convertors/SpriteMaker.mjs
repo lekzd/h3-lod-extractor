@@ -3,7 +3,7 @@ import path from "path";
 import {getPCXFilesByMask} from "../modules/getPCXFilesByMask";
 import {getDEFFilesByMask} from "../modules/getDEFFilesByMask";
 import {PNGFile} from "../formats/PNGFile";
-import {ICOFile} from "../formats/ICOFile";
+import {JSONSpriteSheetFile} from "../formats/JSONSpriteSheetFile";
 import {default as mkdirp} from "mkdirp";
 import {logger} from "../modules/logger";
 import {scheduleStream} from "../modules/Scheduler";
@@ -83,12 +83,13 @@ export class SpriteMaker {
         }
 
         filesMap.forEach((file, fileName) => {
-            const filePath = fileName.replace(regExp, outFile);
-            const dirName = path.dirname(filePath);
+            const PNGFilePath = fileName.replace(regExp, outFile);
+            const JSONFilePath = PNGFilePath.replace('.png', '.json');
+            const dirName = path.dirname(PNGFilePath);
 
             logger.log(`sprite: ${fileName}`);
 
-            scheduleStream(filePath, () => {
+            scheduleStream(PNGFilePath, () => {
                 mkdirp.sync(dirName);
 
                 file.parseContents();
@@ -97,6 +98,16 @@ export class SpriteMaker {
                     file.frames.forEach((d,index) => {
                         order.push(index);
                     });
+                }
+
+                if (file.canGenerateSpriteSheet()) {
+                    setTimeout(() => {
+                        scheduleStream(JSONFilePath, () => {
+                            return JSONSpriteSheetFile.fromDefAnimationBlocks(
+                                file.blocks, file.type, file.width, file.height, width
+                            );
+                        });
+                    }, 1000);
                 }
 
                 return PNGFile.spriteFromFrames(file.frames, width, order)

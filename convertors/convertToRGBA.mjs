@@ -1,6 +1,6 @@
 
 export function convertToRGBA(inputPalette) {
-    const outPalette = inputPalette.slice(0).map(obj => Object.assign({a: 255}, obj));
+    const outPalette = inputPalette.slice(0);
 
     outPalette[0] = {r: 0, g: 0, b: 0, a: 0};
     outPalette[1] = {r: 0, g: 0, b: 0, a: 0x40};
