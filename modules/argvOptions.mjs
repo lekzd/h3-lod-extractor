@@ -2,6 +2,12 @@ import {default as argv} from "argv";
 
 const {options} = argv
     .option({
+        name: 'openFile',
+        short: 'o',
+        type: 'string',
+        description: 'Show file contents'
+    })
+    .option({
         name: 'filter',
         short: 'if',
         type: 'string',

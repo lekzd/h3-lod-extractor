@@ -6,18 +6,18 @@ Node.js script converts HoMM 3 [.lod](http://mmgames.ru/index.php?option=com_con
 
 ## Install
 ```
-npm install
+yarn install
 ```
 ## Usage
 
 #### List of all files from archive
 ```
-npm run extract -- --input=test/h3sprite.lod
+yarn extract -- --input=test/h3sprite.lod
 ```
 
 #### List of all files from archive with filter by name
 ```
-npm run extract -- --input=test/h3sprite.lod --filter=spell
+yarn extract -- --input=test/h3sprite.lod --filter=spell
 ```
 
 #### Extract files to specific folder
@@ -34,6 +34,12 @@ yarn extract --input=test/h3sprite.lod --filter=spell --output=test/out
 ```
 yarn extract --input=test/h3sprite.lod --outputFilter=\\.json --output=test/out
 ```
+
+#### Extract a specific file contents as is
+```
+yarn run -silent extract --input=test/h3sprite.lod --openFile=ch07.def > test/ch07.def
+```
+
 To get all necessary pictures you need to pass all *.lod files from original Heroes 3 repositories.
 
 It's not a utility convertor for all files. It makes files that can be useful in web development purposes, png, webp and ico files sorted by folders.

@@ -22,6 +22,21 @@ process.on('uncaughtException', function(err) {
     console.log('[Error:]: ' + err);
 });
 
+export function readAsString(array) {
+    let normalize = function(value) {
+        if (value > 192) {
+            return value + 848;
+        } else {
+            return value;
+        }
+    };
+    return String.fromCharCode(...array.map(normalize));
+}
+
+export function readAsHEX(array) {
+    return array.map(v => v.toString(16).padStart(2, '0'));
+}
+
 async function main() {
     if (!argvOptions.input) {
         throw Error('No --input parameter specified!');
@@ -32,6 +47,25 @@ async function main() {
     const filesMap = await getFileListFromArchives(argvOptions.input, argvOptions.filter);
     // const palettesMap = getPalettes(filesMap);
 
+    if (argvOptions.openFile) {
+        const fileName = argvOptions.openFile;
+
+        if (!filesMap.has(fileName)) {
+            throw Error(`File '${fileName}' is not exists in '${argvOptions.input}' archive!`);
+        }
+
+        const fileContents = filesMap.get(argvOptions.openFile);
+
+        console.clear();
+
+        if (fileName.endsWith('.txt')) {
+            console.log(readAsString([...fileContents]));
+        } else {
+            console.log(fileContents.toString('ascii'));
+        }
+
+        return;
+    }
 
     if (!argvOptions.output) {
         const results = [
