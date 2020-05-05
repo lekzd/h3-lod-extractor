@@ -104,13 +104,13 @@ export class SpriteMaker {
                     setTimeout(() => {
                         scheduleStream(JSONFilePath, () => {
                             return JSONSpriteSheetFile.fromDefAnimationBlocks(
-                                file.blocks, file.type, file.width, file.height, width
+                                file.blocks, file.type, file.width, file.height, width, PNGFilePath
                             );
                         });
                     }, 1000);
                 }
 
-                return PNGFile.spriteFromFrames(file.frames, width, order)
+                return PNGFile.spriteFromFrames(file.frames, width, order);
             });
         });
 

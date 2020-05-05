@@ -1,5 +1,6 @@
 import { AbstractFile } from "./AbstractFile";
 import { Readable } from 'stream';
+import { argvOptions } from '../modules/argvOptions';
 
 const BATTLE_CREATURE = {
     '0': 'MOVING',
@@ -37,8 +38,11 @@ export class JSONSpriteSheetFile extends AbstractFile {
         super(buffer);
     }
 
-    static fromDefAnimationBlocks(blocks, type, frameWidth, frameHeight, countInRow) {
+    static fromDefAnimationBlocks(blocks, type, frameWidth, frameHeight, countInRow, pngPath) {
         const frames = {};
+        const animations = {};
+        const relativePngPath = pngPath.replace(new RegExp(`^${argvOptions.output}`), '');
+        const meta = { image: relativePngPath };
         const scheme = ANIMTAION_SCHEMES[type];
 
         if (!scheme) {
@@ -62,19 +66,24 @@ export class JSONSpriteSheetFile extends AbstractFile {
         for (let i = 0; i < blocks.length; i++) {
             const {id, count} = blocks[i];
             const animationType = scheme[id];
+            animations[animationType] = [];
 
             for (let j = 0; j < count; j++) {
                 const x = index % countInRow;
                 const y = Math.floor(index / countInRow);
                 const data = getFrame(x * frameWidth, y * frameHeight, frameWidth, frameHeight);
+                const frameName = `${animationType}_${j}`;
 
-                frames[`${animationType}_${j}`] = data;
+                frames[frameName] = data;
+                animations[animationType].push(frameName);
 
                 index++;
             }
         }
-        
-        const stream = new Readable.from(JSON.stringify({ frames }));
+
+        const spritesheet = { frames, meta, animations };
+        debugger;
+        const stream = new Readable.from(JSON.stringify(spritesheet));
 
         return stream;
     }

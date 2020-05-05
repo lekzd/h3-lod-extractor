@@ -2,15 +2,23 @@ import {LodFile} from "../formats/LodFile";
 import {default as glob} from "glob";
 import fs from "fs";
 import {logger} from "./logger";
+import {argvOptions} from "./argvOptions";
 
-export async function getFileListFromArchives(globPath) {
+export async function getFileListFromArchives(globPath, filter = null) {
     const filesMap = new Map();
     const lodFilePaths = await getLodFileList(globPath);
     const lodFiles = await Promise.all(lodFilePaths.map(lodFilePath => getLodFile(lodFilePath)));
+    const searchReg = filter ? new RegExp(filter, 'ig') : null;
 
     lodFiles.forEach(lodData => {
         lodData.files.forEach(file => {
-            filesMap.set(file.filename, file.data);
+            if (searchReg) {
+                if (searchReg.test(file.filename)) {
+                    filesMap.set(file.filename, file.data);
+                }
+            } else  {
+                filesMap.set(file.filename, file.data);
+            }
         })
     });
 

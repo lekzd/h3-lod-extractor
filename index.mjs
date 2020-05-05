@@ -29,25 +29,18 @@ async function main() {
 
     logger.startZone('LOD files');
 
-    const filesMap = await getFileListFromArchives(argvOptions.input);
+    const filesMap = await getFileListFromArchives(argvOptions.input, argvOptions.filter);
     // const palettesMap = getPalettes(filesMap);
 
 
-    if (argvOptions.search) {
-        const searchReg = new RegExp(argvOptions.search, 'ig');
+    if (!argvOptions.output) {
         const results = [
-            ...filesMap.keys()
-        ]
-        .filter(name => searchReg.test(name));
+            ...filesMap.keys(),
+        ];
 
         console.log(results);
 
         return;
-    }
-
-
-    if (!argvOptions.output) {
-        throw Error('No --output parameter specified!');
     }
 
     logger.endZone('LOD files');
@@ -218,21 +211,11 @@ async function main() {
             outFile: path.join(argvOptions.output, `ui/sprites/patharrow.png`)
         })
 
-        // UI PORTRAITS
+        // BATTLE UI SPELL CAST CURSOR
         .spriteDEF({
-            regExp: /^bores\.def$/,
+            regExp: /^crspell\.def$/,
             width: 1,
-            outFile: path.join(argvOptions.output, `ui/portraits/resources/lg.png`)
-        })
-        .spriteDEF({
-            regExp: /^cprsmall\.def$/,
-            width: 14,
-            outFile: path.join(argvOptions.output, `ui/portraits/creatures/sm.png`)
-        })
-        .spriteDEF({
-            regExp: /^twcrport\.def$/,
-            width: 14,
-            outFile: path.join(argvOptions.output, `ui/portraits/creatures/lg.png`)
+            outFile: path.join(argvOptions.output, `battle/ui/spell_cast_cursor.png`)
         })
 
         // BATTLE EFFECTS
@@ -443,6 +426,21 @@ async function main() {
 
         // UI PORTRAITS
         .spriteDEF({
+            regExp: /^bores\.def$/,
+            width: 1,
+            outFile: path.join(argvOptions.output, `ui/portraits/resources/lg.png`)
+        })
+        .spriteDEF({
+            regExp: /^cprsmall\.def$/,
+            width: 14,
+            outFile: path.join(argvOptions.output, `ui/portraits/creatures/sm.png`)
+        })
+        .spriteDEF({
+            regExp: /^twcrport\.def$/,
+            width: 14,
+            outFile: path.join(argvOptions.output, `ui/portraits/creatures/lg.png`)
+        })
+        .spriteDEF({
             regExp: /^artifact\.def$/,
             width: 9,
             outFile: path.join(argvOptions.output, `ui/portraits/artifacts/md.png`)
@@ -543,6 +541,17 @@ async function main() {
             outFile: path.join(argvOptions.output, `ui/portraits/versions.png`)
         })
 
+        .spriteDEF({
+            regExp: /^spells\.def$/,
+            width: 1,
+            outFile: path.join(argvOptions.output, `ui/portraits/spells/lg.png`)
+        })
+        .spriteDEF({
+            regExp: /^spellbon\.def$/,
+            width: 1,
+            outFile: path.join(argvOptions.output, `ui/portraits/spells/md.png`)
+        })
+
         // TOWNS
         .spriteDEF({
             regExp: /^(tb(\w)(\w{4,5}))\.def$/,
@@ -564,7 +573,7 @@ async function main() {
         })
     ;
 
-    // BATLE CREATURE ANIMATIONS
+    // BATTLE CREATURE ANIMATIONS
 
     BATTLE_CREATURES_CASTLE.map((name, index) => {
         spriteMaker

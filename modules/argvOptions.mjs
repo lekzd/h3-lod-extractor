@@ -2,10 +2,16 @@ import {default as argv} from "argv";
 
 const {options} = argv
     .option({
-        name: 'search',
-        short: 's',
+        name: 'filter',
+        short: 'if',
         type: 'string',
-        description: 'Defines input files mask'
+        description: 'Defines filter for input filenames regular expressions are welcome'
+    })
+    .option({
+        name: 'outputFilter',
+        short: 'of',
+        type: 'string',
+        description: 'Defines filter for output filenames regular expressions are welcome'
     })
     .option({
         name: 'input',

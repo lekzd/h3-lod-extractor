@@ -1,4 +1,5 @@
 import fs from "fs";
+import {argvOptions} from "./argvOptions";
 
 const maxStreamsCount = 100;
 let activeStreamsCount = 0;
@@ -6,6 +7,7 @@ let total = 0;
 let done = 0;
 const queue = new Map();
 const startTime = Date.now();
+const searchReg = argvOptions.outputFilter ? new RegExp(argvOptions.outputFilter, 'ig') : null;
 
 const drawStatus = () => {
     console.clear();
@@ -25,7 +27,9 @@ const tryRunStream = () => {
         return;
     }
     const availableCount = maxStreamsCount - activeStreamsCount;
-    const streamsToRun = [...queue.keys()].slice(0, availableCount);
+    const streamsToRun = [...queue.keys()]
+        .filter(key => searchReg ? searchReg.test(key) : true)
+        .slice(0, availableCount);
 
     streamsToRun.forEach(filePath => {
         // console.log('start:', filePath);
@@ -46,13 +50,17 @@ const tryRunStream = () => {
                     drawStatus();
                     
                     activeStreamsCount--;
-                    tryRunStream();
+                    setTimeout(() => {
+                        tryRunStream();
+                    })
                 });
         } catch (e) {
-            console.error(`writting stream for ${filePath} failed with`, e);
+            console.error(`writing stream for ${filePath} failed with`, e);
 
             activeStreamsCount--;
-            tryRunStream();
+            setTimeout(() => {
+                tryRunStream();
+            })
         }
 
         queue.delete(filePath);
