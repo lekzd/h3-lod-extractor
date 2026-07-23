@@ -252,16 +252,34 @@ async function main() {
             outFile: path.join(argvOptions.output, `battle/ui/spell_cast_cursor.png`)
         })
 
-        // BATTLE EFFECTS
+        // BATTLE SPELL EFFECTS
+        // Names from VCMI config/spells (C##SP*, C0ACID, SP##_)
         .spriteDEF({
-            regExp: /^c(\d{2})sp(\w+)\.def$/,
-            width: 1,
-            outFile: path.join(argvOptions.output, `battle/effects/c$1sp$2.png`)
-        })
-        .spriteDEF({
-            regExp: /^(sp(\d{2})_\w)?\.def$/,
+            regExp: /^(c\d{2}sp\w+)\.def$/,
             width: 1,
             outFile: path.join(argvOptions.output, `battle/effects/$1.png`)
+        })
+        .spriteDEF({
+            regExp: /^(c0acid)\.def$/,
+            width: 1,
+            outFile: path.join(argvOptions.output, `battle/effects/$1.png`)
+        })
+        .spriteDEF({
+            regExp: /^(sp\d{2}_)\.def$/,
+            width: 1,
+            outFile: path.join(argvOptions.output, `battle/effects/$1.png`)
+        })
+
+        // BATTLE OBSTACLES
+        // Names from VCMI config/obstacles.json (Ob*.def / Ob*.pcx)
+        .spriteDEF({
+            regExp: /^(ob[\w]+)\.def$/,
+            width: 1,
+            outFile: path.join(argvOptions.output, `battle/obstacles/$1.png`)
+        })
+        .separatePCXFiles({
+            regExp: /^(ob[\w]+)\.pcx$/,
+            outFile: path.join(argvOptions.output, `battle/obstacles/$1.png`)
         })
 
         // BATTLE HEROES
