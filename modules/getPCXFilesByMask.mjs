@@ -1,4 +1,4 @@
-import {PCXFile} from "../formats/PCXFile";
+import {PCXFile} from "../formats/PCXFile.mjs";
 
 export function getPCXFilesByMask(filesMap, regExp) {
     const resultMap = new Map();

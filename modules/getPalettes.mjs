@@ -1,4 +1,4 @@
-import {palToJSON} from "../convertors/palToJSON";
+import {palToJSON} from "../convertors/palToJSON.mjs";
 
 export function getPalettes(filesMap) {
     const palettesMap = new Map();

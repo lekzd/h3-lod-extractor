@@ -1,8 +1,8 @@
-import {LodFile} from "../formats/LodFile";
+import {LodFile} from "../formats/LodFile.mjs";
 import {default as glob} from "glob";
 import fs from "fs";
-import {logger} from "./logger";
-import {argvOptions} from "./argvOptions";
+import {logger} from "./logger.mjs";
+import {argvOptions} from "./argvOptions.mjs";
 
 export async function getFileListFromArchives(globPath, filter = null) {
     const filesMap = new Map();

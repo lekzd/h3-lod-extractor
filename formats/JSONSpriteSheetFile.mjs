@@ -1,6 +1,6 @@
-import { AbstractFile } from "./AbstractFile";
+import { AbstractFile } from "./AbstractFile.mjs";
 import { Readable } from 'stream';
-import { argvOptions } from '../modules/argvOptions';
+import { argvOptions } from '../modules/argvOptions.mjs';
 
 const BATTLE_CREATURE = {
     '0': 'MOVING',

@@ -1,6 +1,6 @@
-import {AbstractFile} from "./AbstractFile";
+import {AbstractFile} from "./AbstractFile.mjs";
 import * as zlib from "zlib";
-import {logger} from "../modules/logger";
+import {logger} from "../modules/logger.mjs";
 
 export class LodFile extends AbstractFile {
 

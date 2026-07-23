@@ -1,4 +1,4 @@
-import {AbstractFile} from "./AbstractFile";
+import {AbstractFile} from "./AbstractFile.mjs";
 import {default as bmp} from "bmp-js";
 import {Readable} from 'stream';
 

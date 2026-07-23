@@ -1,6 +1,6 @@
-import {AbstractFile} from "./AbstractFile";
-import {convertToRGBA} from "../convertors/convertToRGBA";
-import {logger} from "../modules/logger";
+import {AbstractFile} from "./AbstractFile.mjs";
+import {convertToRGBA} from "../convertors/convertToRGBA.mjs";
+import {logger} from "../modules/logger.mjs";
 
 export class DEFFile extends AbstractFile {
 

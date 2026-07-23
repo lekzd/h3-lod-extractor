@@ -179,3 +179,11 @@ export const BATTLE_CREATURES_RANDOM = [
     'CRSDGN',
     'CFDRGN',
 ];
+
+// Maschines
+export const BATTLE_CREATURES_MASCHINES = [
+    'SMBAL',
+    'SMCART',
+    'SMCATA',
+    'SMTENT',
+];

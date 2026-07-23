@@ -1,12 +1,12 @@
 import fs from "fs";
 import path from "path";
-import {getPCXFilesByMask} from "../modules/getPCXFilesByMask";
-import {getDEFFilesByMask} from "../modules/getDEFFilesByMask";
-import {PNGFile} from "../formats/PNGFile";
-import {JSONSpriteSheetFile} from "../formats/JSONSpriteSheetFile";
+import {getPCXFilesByMask} from "../modules/getPCXFilesByMask.mjs";
+import {getDEFFilesByMask} from "../modules/getDEFFilesByMask.mjs";
+import {PNGFile} from "../formats/PNGFile.mjs";
+import {JSONSpriteSheetFile} from "../formats/JSONSpriteSheetFile.mjs";
 import {default as mkdirp} from "mkdirp";
-import {logger} from "../modules/logger";
-import {scheduleStream} from "../modules/Scheduler";
+import {logger} from "../modules/logger.mjs";
+import {scheduleStream} from "../modules/Scheduler.mjs";
 
 export class SpriteMaker {
 

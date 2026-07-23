@@ -1,10 +1,10 @@
 
 import path from "path";
-import {getFileListFromArchives} from "./modules/getFileListFromArchives";
-import {getPalettes} from "./modules/getPalettes";
-import {SpriteMaker} from "./convertors/SpriteMaker";
-import {logger} from "./modules/logger";
-import {argvOptions} from "./modules/argvOptions";
+import {getFileListFromArchives} from "./modules/getFileListFromArchives.mjs";
+import {getPalettes} from "./modules/getPalettes.mjs";
+import {SpriteMaker} from "./convertors/SpriteMaker.mjs";
+import {logger} from "./modules/logger.mjs";
+import {argvOptions} from "./modules/argvOptions.mjs";
 import {
     BATTLE_CREATURES_CASTLE,
     BATTLE_CREATURES_RAMPART,
@@ -16,7 +16,8 @@ import {
     BATTLE_CREATURES_STRONGHOLD,
     BATTLE_CREATURES_CONFLUX,
     BATTLE_CREATURES_RANDOM,
-} from "./constants/BATTLE_CREATURES";
+    BATTLE_CREATURES_MASCHINES,
+} from "./constants/BATTLE_CREATURES.mjs";
 
 process.on('uncaughtException', function(err) {
     console.log('[Error:]: ' + err);
@@ -450,6 +451,11 @@ async function main() {
             width: 1,
             outFile: path.join(argvOptions.output, `ui/modal/spellbook/corner_r.png`)
         })
+        .spriteDEF({
+            regExp: /^speltab\.def$/,
+            width: 1,
+            outFile: path.join(argvOptions.output, `ui/modal/spellbook/speltab.png`)
+        })
         .spritePCX({
             regExp: /^(tb[a-z]{2})back\.pcx$/,
             width: 1,
@@ -474,6 +480,16 @@ async function main() {
             regExp: /^tptavern\.pcx$/,
             width: 1,
             outFile: path.join(argvOptions.output, `ui/modal/tavern/modal.png`)
+        })
+        .spritePCX({
+            regExp: /^tpmage\.pcx$/,
+            width: 1,
+            outFile: path.join(argvOptions.output, `ui/modal/magic/modal.png`)
+        })
+        .spritePCX({
+            regExp: /^ccrpop\.pcx$/,
+            width: 1,
+            outFile: path.join(argvOptions.output, `battle/ui/hero_modal.png`)
         })
 
         // UI PORTRAITS
@@ -505,7 +521,7 @@ async function main() {
         .spritePCX({
             regExp: /^hpl[\w\d]+\.pcx$/,
             width: 8,
-            outFile: path.join(argvOptions.output, `ui/portraits/hero/md.png`)
+            outFile: path.join(argvOptions.output, `ui/portraits/hero/md.png`),
         })
         .spritePCX({
             regExp: /^hps[\w\d]+\.pcx$/,
@@ -714,6 +730,15 @@ async function main() {
                 regExp: new RegExp(`^(${name.toLowerCase()})\\.def$`),
                 width: 8,
                 outFile: path.join(argvOptions.output, `battle/creatures/x/${index}_$1.png`)
+            })
+    })
+
+    BATTLE_CREATURES_MASCHINES.map((name, index) => {
+        spriteMaker
+            .spriteDEF({
+                regExp: new RegExp(`^(${name.toLowerCase()})\\.def$`),
+                width: 8,
+                outFile: path.join(argvOptions.output, `battle/creatures/sm/${index}_$1.png`)
             })
     })
 

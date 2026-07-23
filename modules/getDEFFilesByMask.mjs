@@ -1,5 +1,5 @@
-import {DEFFile} from "../formats/DEFFile";
-import {logger} from "./logger";
+import {DEFFile} from "../formats/DEFFile.mjs";
+import {logger} from "./logger.mjs";
 import * as os from "os";
 
 export function getDEFFilesByMask(filesMap, regExp) {

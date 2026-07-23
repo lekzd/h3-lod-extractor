@@ -1,4 +1,4 @@
-import {AbstractFile} from "./AbstractFile";
+import {AbstractFile} from "./AbstractFile.mjs";
 
 export class PALFIle extends AbstractFile {
     constructor(buffer) {

@@ -1,5 +1,5 @@
 import fs from "fs";
-import {argvOptions} from "./argvOptions";
+import {argvOptions} from "./argvOptions.mjs";
 
 const maxStreamsCount = 100;
 let activeStreamsCount = 0;

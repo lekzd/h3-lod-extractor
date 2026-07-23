@@ -1,5 +1,5 @@
 import {default as pngjs} from 'pngjs';
-import {logger} from "../modules/logger";
+import {logger} from "../modules/logger.mjs";
 
 export class PNGFile {
     constructor(pngJsFile) {
